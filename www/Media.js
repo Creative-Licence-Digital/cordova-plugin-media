@@ -138,6 +138,30 @@ Media.prototype.stopRecord = function() {
     exec(null, this.errorCallback, "Media", "stopRecordingAudio", [this.id]);
 };
 
+
+/**
+* Specific function to start and stop recarding without previous explicit instanction.
+* The purpose is to be able to use FIT middleware with the strandard format.
+*/
+var currentRecording = null;
+
+Media.recordingStart = function(src) {
+  if(currentRecording != null) {
+      currentRecording.release();
+  }
+  currentRecording = new Media(src);
+  currentRecording.startRecord();
+};
+
+Media.recordingStop = function() {
+  currentRecording.stopRecord();
+};
+
+Media.playRecording = function() {
+  currentRecording.play();
+};
+
+
 /**
  * Release the resources.
  */
